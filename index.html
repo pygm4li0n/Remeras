@@ -1,6 +1,14 @@
-<style>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-/* BASE */
+<title>BASE SHIRTS</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+
+<style>
 * {
   margin:0;
   padding:0;
@@ -25,158 +33,176 @@ body {
   align-items:center;
   cursor:pointer;
   position:relative;
-  overflow:hidden;
   transition:0.5s;
+  overflow:hidden;
 }
 
-/* DESKTOP TEXTURAS */
+/* TEXTURAS PURAS */
 .left {
   background-image:url('https://i.postimg.cc/dQxMSLXF/negra2.png');
-  background-size:125%;
+  background-size:cover;
   background-position:center;
-  background-repeat:no-repeat;
   color:#fff;
 }
 
 .right {
   background-image:url('https://i.postimg.cc/0jLB5JRZ/blanca2.png');
-  background-size:125%;
+  background-size:cover;
   background-position:center;
-  background-repeat:no-repeat;
   color:#000;
 }
 
-/* MOBILE FULL BACKGROUND */
-@media(max-width:768px){
-
-  .split {
-    height:100dvh; /* clave para mobile real */
-  }
-
-  .half {
-    height:100dvh;
-  }
-
-  .left,
-  .right {
-    background-size:cover !important;
-    background-position:center center !important;
-  }
-
-}
-
-/* HOVER / TOUCH */
-.half::before {
+/* GRAIN (opcional, no afecta color real) */
+.half::after {
   content:"";
   position:absolute;
   inset:0;
-  background:radial-gradient(circle, rgba(255,255,255,0.2), transparent 60%);
-  opacity:0;
-  transition:0.4s;
+  opacity:0.05;
+  pointer-events:none;
+  background-image:url('https://grainy-gradients.vercel.app/noise.svg');
 }
 
-.half:hover::before,
-.half.active::before {
-  opacity:1;
-}
-
-.half:hover,
-.half.active {
-  flex:1.3;
-}
-
-/* TEXT */
+/* TEXTO */
 .text {
   position:relative;
   z-index:2;
-  font-size:clamp(30px,6vw,70px);
-  letter-spacing:5px;
+  font-size:clamp(28px,5vw,70px);
+  letter-spacing:4px;
+  text-transform:uppercase;
+}
+
+/* glow */
+.left .text {
+  text-shadow:0 0 10px rgba(255,255,255,0.4);
+}
+
+.right .text {
+  text-shadow:0 0 10px rgba(0,0,0,0.3);
+}
+
+/* hover */
+.half:hover {
+  flex:1.2;
 }
 
 /* PRODUCTS */
 .products {
   display:none;
+  padding:20px;
   background:#fff;
   min-height:100vh;
-  overflow-y:auto;
 }
 
-/* GRID DESKTOP */
+/* GRID */
 .grid {
   display:grid;
-  grid-template-columns:repeat(2,1fr);
+  grid-template-columns: repeat(2,1fr);
   gap:20px;
-  padding:20px;
 }
 
-/* MOBILE FEED */
 @media(max-width:600px){
-
   .grid {
-    display:flex;
-    flex-direction:column;
-    gap:0;
-    padding:0;
+    grid-template-columns: repeat(3,1fr);
+    gap:10px;
   }
-
-  .card {
-    height:100dvh;
-  }
-
-  .card img {
-    width:100%;
-    height:100%;
-    object-fit:cover;
-  }
-
 }
 
-/* CARD */
 .card {
-  border-radius:14px;
-  overflow:hidden;
-  background:#eee;
-  cursor:pointer;
+  border:1px solid #ddd;
 }
 
 .card img {
   width:100%;
-  height:300px;
+  height:200px;
   object-fit:cover;
+}
+
+@media(max-width:600px){
+  .card img {
+    height:120px;
+  }
 }
 
 /* BACK */
 .back {
-  position:fixed;
-  top:15px;
-  left:15px;
-  z-index:10;
+  margin-bottom:20px;
   cursor:pointer;
-  font-size:12px;
-  background:#000;
-  color:#fff;
-  padding:6px 10px;
-  border-radius:6px;
+  font-size:14px;
+  opacity:0.6;
 }
-
-/* MODAL */
-.modal {
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.95);
-  display:none;
-  justify-content:center;
-  align-items:center;
-  z-index:20;
-}
-
-.modal img {
-  max-width:95%;
-  max-height:95%;
-}
-
-.modal.active {
-  display:flex;
-}
-
 </style>
+</head>
+
+<body>
+
+<div class="split" id="home">
+  <div class="half left" onclick="show('black')">
+    <div class="text">NEGRA</div>
+  </div>
+
+  <div class="half right" onclick="show('white')">
+    <div class="text">BLANCA</div>
+  </div>
+</div>
+
+<div class="products" id="products">
+  <div class="back" onclick="goBack()">← VOLVER</div>
+  <div class="grid" id="grid"></div>
+</div>
+
+<script>
+
+/* PARALLAX SUAVE */
+document.addEventListener("mousemove", (e) => {
+  const home = document.getElementById("home");
+  if(home.style.display === "none") return;
+
+  const x = (e.clientX / window.innerWidth - 0.5) * 4;
+  const y = (e.clientY / window.innerHeight - 0.5) * 4;
+
+  document.querySelectorAll('.half').forEach(el=>{
+    el.style.backgroundPosition = `${50 + x}% ${50 + y}%`;
+  });
+});
+
+/* PRODUCTOS */
+const productos = [
+  {cat:'black', img:'https://via.placeholder.com/300/000000/ffffff'},
+  {cat:'black', img:'https://via.placeholder.com/300/000000/ffffff'},
+  {cat:'black', img:'https://via.placeholder.com/300/000000/ffffff'},
+  {cat:'black', img:'https://via.placeholder.com/300/000000/ffffff'},
+  {cat:'black', img:'https://via.placeholder.com/300/000000/ffffff'},
+
+  {cat:'white', img:'https://via.placeholder.com/300/ffffff/000000'},
+  {cat:'white', img:'https://via.placeholder.com/300/ffffff/000000'},
+  {cat:'white', img:'https://via.placeholder.com/300/ffffff/000000'},
+  {cat:'white', img:'https://via.placeholder.com/300/ffffff/000000'},
+  {cat:'white', img:'https://via.placeholder.com/300/ffffff/000000'}
+];
+
+function show(cat){
+  document.getElementById('home').style.display = 'none';
+  document.getElementById('products').style.display = 'block';
+
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+
+  productos
+    .filter(p => p.cat === cat)
+    .forEach(p => {
+      grid.innerHTML += `
+        <div class="card">
+          <img src="${p.img}">
+        </div>
+      `;
+    });
+}
+
+function goBack(){
+  document.getElementById('home').style.display = 'flex';
+  document.getElementById('products').style.display = 'none';
+}
+</script>
+
+</body>
+</html>
