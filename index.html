@@ -14,7 +14,7 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Orbitron',sans-serif;overflow:hidden;}
 
-/* HOME SPLIT */
+/* SPLIT */
 .split{
   display:flex;
   height:100dvh;
@@ -28,7 +28,7 @@ body{font-family:'Orbitron',sans-serif;overflow:hidden;}
   cursor:pointer;
   position:relative;
   overflow:hidden;
-  transition:0.35s ease;
+  transition:0.35s;
 }
 
 /* BACKGROUNDS */
@@ -41,19 +41,18 @@ body{font-family:'Orbitron',sans-serif;overflow:hidden;}
   color:#000;
 }
 
-/* MOBILE */
 @media(max-width:768px){
   .left,.right{background-size:cover;}
 }
 
-/* 🔥 HOVER PRO */
+/* HOVER */
 .half::before{
   content:"";
   position:absolute;
   inset:0;
-  background:radial-gradient(circle at center, rgba(255,255,255,0.22), transparent 65%);
+  background:radial-gradient(circle, rgba(255,255,255,0.2), transparent 60%);
   opacity:0;
-  transition:0.35s;
+  transition:0.3s;
 }
 
 .half:hover::before,
@@ -61,7 +60,6 @@ body{font-family:'Orbitron',sans-serif;overflow:hidden;}
   opacity:1;
 }
 
-/* shine subtle */
 .half::after{
   content:"";
   position:absolute;
@@ -75,19 +73,17 @@ body{font-family:'Orbitron',sans-serif;overflow:hidden;}
   opacity:1;
 }
 
-/* leve escala elegante */
 .half:hover{
   transform:scale(1.02);
 }
 
-/* TEXT MEJORADO */
+/* TEXT */
 .text{
-  font-size:clamp(26px,4.5vw,48px);
-  letter-spacing:4px;
-  opacity:0.95;
+  font-size:clamp(40px,6vw,72px);
+  letter-spacing:6px;
 }
 
-/* PRODUCTS (EDITORIAL FULL CENTER) */
+/* PRODUCTS */
 .products{
   display:none;
   height:100dvh;
@@ -96,10 +92,13 @@ body{font-family:'Orbitron',sans-serif;overflow:hidden;}
   position:relative;
 }
 
-/* CENTER IMAGE */
+/* VIEWER */
 .viewer{
   position:absolute;
-  inset:0;
+  left:0;
+  top:0;
+  height:100%;
+  width:60%;
   display:flex;
   justify-content:center;
   align-items:center;
@@ -107,9 +106,105 @@ body{font-family:'Orbitron',sans-serif;overflow:hidden;}
 }
 
 .viewer img{
-  max-width:100%;
-  max-height:100%;
+  max-width:90%;
+  max-height:90%;
   object-fit:contain;
+}
+
+/* INFO PANEL */
+.info{
+  position:absolute;
+  left:62%;
+  top:50%;
+  transform:translateY(-50%);
+
+  width:30%;
+  max-width:480px;
+
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:center;
+
+  gap:12px;
+  color:#111;
+}
+
+/* TEXT INFO */
+.tag{
+  font-size:14px;
+  opacity:0.6;
+}
+
+.title{
+  font-size:32px;
+  line-height:1.15;
+}
+
+.rating{
+  color:#3483fa;
+}
+
+.rating span{
+  color:#666;
+  font-size:12px;
+}
+
+.price{
+  font-size:44px;
+  font-weight:800;
+}
+
+.subtitle{
+  font-size:14px;
+  opacity:0.6;
+}
+
+/* SIZES */
+.sizes span{
+  font-size:14px;
+}
+
+.size-list{
+  display:flex;
+  gap:10px;
+  margin-top:8px;
+}
+
+.size-list button{
+  border:1px solid #000;
+  background:none;
+  padding:8px 14px;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.size-list button:hover{
+  background:#000;
+  color:#fff;
+}
+
+/* BUY */
+.buy{
+  width:60%;
+  margin-top:12px;
+
+  padding:14px;
+  background:#3483fa;
+  color:#fff;
+
+  text-align:center;
+  text-decoration:none;
+  font-weight:700;
+
+  border-radius:8px;
+  transition:0.25s;
+
+  align-self:flex-start;
+}
+
+.buy:hover{
+  background:#2968c8;
 }
 
 /* BACK */
@@ -121,19 +216,16 @@ body{font-family:'Orbitron',sans-serif;overflow:hidden;}
   background:#000;
   color:#fff;
   padding:8px 12px;
-  font-size:12px;
   cursor:pointer;
   border-radius:6px;
 }
 
-/* SIDE THUMBS */
+/* THUMBS */
 .side{
   position:absolute;
-  right:20px;
-  top:50%;
-  transform:translateY(-50%);
+  left:20px;
+  bottom:20px;
   display:flex;
-  flex-direction:column;
   gap:10px;
 }
 
@@ -158,19 +250,44 @@ body{font-family:'Orbitron',sans-serif;overflow:hidden;}
   transform:scale(1.05);
 }
 
-/* MOBILE THUMBS BOTTOM */
+/* MOBILE */
 @media(max-width:768px){
-  .side{
-    bottom:10px;
-    top:auto;
-    right:50%;
-    transform:translateX(50%);
-    flex-direction:row;
+
+  .viewer{
+    width:100%;
   }
 
-  .thumb{
-    width:50px;
-    height:70px;
+  .viewer img{
+    max-width:82%;
+    max-height:82%;
+  }
+
+  .info{
+    left:0;
+    width:100%;
+    transform:none;
+    bottom:0;
+    top:auto;
+
+    padding:20px;
+    align-items:center;
+    text-align:center;
+    background:#fff;
+  }
+
+  .buy{
+    width:80%;
+    align-self:center;
+  }
+
+  .text{
+    font-size:32px;
+  }
+
+  .side{
+    bottom:120px;
+    left:50%;
+    transform:translateX(-50%);
   }
 }
 
@@ -194,13 +311,34 @@ body{font-family:'Orbitron',sans-serif;overflow:hidden;}
     <img id="mainImg">
   </div>
 
+  <div class="info">
+    <div class="tag">Nuevo | +50 vendidos</div>
+    <div class="title">Base Shirt Minimal Logo</div>
+    <div class="rating">★★★★★ <span>(9)</span></div>
+    <div class="price">$7.000</div>
+    <div class="subtitle">Precio sin impuestos nacionales</div>
+
+    <div class="sizes">
+      <span>Talles:</span>
+      <div class="size-list">
+        <button>S</button>
+        <button>M</button>
+        <button>L</button>
+        <button>XL</button>
+      </div>
+    </div>
+
+    <a href="https://mpago.li/2NvhvZd" target="_blank" class="buy">
+      COMPRAR
+    </a>
+  </div>
+
   <div class="side" id="thumbs"></div>
 
 </div>
 
 <script>
 
-/* HOVER TOUCH */
 const halves=document.querySelectorAll('.half');
 
 halves.forEach(h=>{
@@ -208,17 +346,8 @@ halves.forEach(h=>{
     const cat=h.classList.contains('left')?'black':'white';
     load(cat);
   };
-
-  h.addEventListener('mouseenter',()=>activate(h));
-  h.addEventListener('touchstart',()=>activate(h));
 });
 
-function activate(el){
-  halves.forEach(h=>h.classList.remove('active'));
-  el.classList.add('active');
-}
-
-/* DATA */
 const data={
   white:[
     "https://i.postimg.cc/NjT50hTy/b4803a98_eb05_44d5_8e02_79754f8b2658.png",
