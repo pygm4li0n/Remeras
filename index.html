@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>BASE SHIRTS</title>
+
+<!-- FONT EPIC -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+
+<style>
+* {
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body {
+  font-family: 'Orbitron', sans-serif;
+  overflow:hidden;
+}
+
+/* SPLIT */
+.split {
+  display:flex;
+  height:100vh;
+}
+
+/* HALF BASE */
+.half {
+  flex:1;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+  transition:0.6s;
+}
+
+/* TEXT STYLE */
+.text {
+  font-size:clamp(28px,5vw,70px);
+  letter-spacing:4px;
+  position:relative;
+  z-index:2;
+}
+
+/* METAL GLOW EFFECT */
+.glow {
+  background: linear-gradient(90deg, #888, #fff, #888);
+  background-size:200%;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  animation:shine 4s linear infinite;
+}
+
+@keyframes shine {
+  0% { background-position:-200%; }
+  100% { background-position:200%; }
+}
+
+/* DARK SIDE */
+.left {
+  background:#000;
+  color:#fff;
+}
+
+.left::before {
+  content:"";
+  position:absolute;
+  width:200%;
+  height:200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 60%);
+  animation: move 10s linear infinite;
+}
+
+/* LIGHT SIDE */
+.right {
+  background:#fff;
+  color:#000;
+}
+
+.right::before {
+  content:"";
+  position:absolute;
+  width:200%;
+  height:200%;
+  background: radial-gradient(circle, rgba(0,0,0,0.08) 0%, transparent 60%);
+  animation: move 10s linear infinite reverse;
+}
+
+/* SUBTLE MOTION */
+@keyframes move {
+  0% { transform:translate(0,0); }
+  50% { transform:translate(-10%, -10%); }
+  100% { transform:translate(0,0); }
+}
+
+/* HOVER EXPAND */
+.half:hover {
+  flex:1.2;
+}
+
+/* PRODUCTS */
+.products {
+  display:none;
+  padding:20px;
+  background:#fff;
+  min-height:100vh;
+  animation:fade 0.4s ease;
+}
+
+@keyframes fade {
+  from {opacity:0;}
+  to {opacity:1;}
+}
+
+/* GRID */
+.grid {
+  display:grid;
+  grid-template-columns: repeat(2,1fr);
+  gap:20px;
+}
+
+@media(max-width:600px){
+  .grid {
+    grid-template-columns: repeat(3,1fr);
+    gap:10px;
+  }
+}
+
+/* CARD */
+.card {
+  border:1px solid #ddd;
+}
+
+.card img {
+  width:100%;
+  height:200px;
+  object-fit:cover;
+}
+
+@media(max-width:600px){
+  .card img {
+    height:120px;
+  }
+}
+
+.info {
+  text-align:center;
+  padding:10px;
+}
+
+.btn {
+  display:inline-block;
+  margin-top:8px;
+  padding:6px 12px;
+  border:1px solid #000;
+  text-decoration:none;
+  color:#000;
+  font-size:12px;
+}
+
+/* BACK */
+.back {
+  margin-bottom:20px;
+  cursor:pointer;
+  opacity:0.6;
+}
+</style>
+</head>
+
+<body>
+
+<!-- SPLIT -->
+<div class="split" id="home">
+  <div class="half left" onclick="show('black')">
+    <div class="text glow">NEGRA</div>
+  </div>
+
+  <div class="half right" onclick="show('white')">
+    <div class="text glow">BLANCA</div>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<div class="products" id="products">
+  <div class="back" onclick="goBack()">← VOLVER</div>
+  <div class="grid" id="grid"></div>
+</div>
+
+<script>
+const productos = [
+  {cat:'black', img:'https://via.placeholder.com/300/000000/ffffff', link:'LINK_1'},
+  {cat:'black', img:'https://via.placeholder.com/300/000000/ffffff', link:'LINK_2'},
+  {cat:'black', img:'https://via.placeholder.com/300/000000/ffffff', link:'LINK_3'},
+  {cat:'black', img:'https://via.placeholder.com/300/000000/ffffff', link:'LINK_4'},
+  {cat:'black', img:'https://via.placeholder.com/300/000000/ffffff', link:'LINK_5'},
+
+  {cat:'white', img:'https://via.placeholder.com/300/ffffff/000000', link:'LINK_6'},
+  {cat:'white', img:'https://via.placeholder.com/300/ffffff/000000', link:'LINK_7'},
+  {cat:'white', img:'https://via.placeholder.com/300/ffffff/000000', link:'LINK_8'},
+  {cat:'white', img:'https://via.placeholder.com/300/ffffff/000000', link:'LINK_9'},
+  {cat:'white', img:'https://via.placeholder.com/300/ffffff/000000', link:'LINK_10'}
+];
+
+function show(cat){
+  document.getElementById('home').style.display = 'none';
+  document.getElementById('products').style.display = 'block';
+
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+
+  productos
+    .filter(p => p.cat === cat)
+    .forEach(p => {
+      grid.innerHTML += `
+        <div class="card">
+          <img src="${p.img}">
+          <div class="info">
+            <a href="${p.link}" target="_blank" class="btn">BUY</a>
+          </div>
+        </div>
+      `;
+    });
+}
+
+function goBack(){
+  document.getElementById('home').style.display = 'flex';
+  document.getElementById('products').style.display = 'none';
+}
+</script>
+
+</body>
+</html>
