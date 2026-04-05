@@ -1,14 +1,6 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>BASE SHIRTS</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
-
 <style>
+
+/* BASE */
 * {
   margin:0;
   padding:0;
@@ -37,7 +29,7 @@ body {
   transition:0.5s;
 }
 
-/* TEXTURAS */
+/* DESKTOP TEXTURAS */
 .left {
   background-image:url('https://i.postimg.cc/dQxMSLXF/negra2.png');
   background-size:125%;
@@ -54,12 +46,31 @@ body {
   color:#000;
 }
 
-/* HOVER */
+/* MOBILE FULL BACKGROUND */
+@media(max-width:768px){
+
+  .split {
+    height:100dvh; /* clave para mobile real */
+  }
+
+  .half {
+    height:100dvh;
+  }
+
+  .left,
+  .right {
+    background-size:cover !important;
+    background-position:center center !important;
+  }
+
+}
+
+/* HOVER / TOUCH */
 .half::before {
   content:"";
   position:absolute;
   inset:0;
-  background:radial-gradient(circle, rgba(255,255,255,0.15), transparent 60%);
+  background:radial-gradient(circle, rgba(255,255,255,0.2), transparent 60%);
   opacity:0;
   transition:0.4s;
 }
@@ -78,8 +89,8 @@ body {
 .text {
   position:relative;
   z-index:2;
-  font-size:clamp(28px,5vw,70px);
-  letter-spacing:4px;
+  font-size:clamp(30px,6vw,70px);
+  letter-spacing:5px;
 }
 
 /* PRODUCTS */
@@ -90,15 +101,15 @@ body {
   overflow-y:auto;
 }
 
-/* DESKTOP GRID */
+/* GRID DESKTOP */
 .grid {
   display:grid;
-  grid-template-columns: repeat(2,1fr);
+  grid-template-columns:repeat(2,1fr);
   gap:20px;
   padding:20px;
 }
 
-/* MOBILE FULLSCREEN FEED */
+/* MOBILE FEED */
 @media(max-width:600px){
 
   .grid {
@@ -109,8 +120,7 @@ body {
   }
 
   .card {
-    height:100vh;
-    width:100%;
+    height:100dvh;
   }
 
   .card img {
@@ -121,11 +131,11 @@ body {
 
 }
 
-/* DESKTOP CARD */
+/* CARD */
 .card {
   border-radius:14px;
   overflow:hidden;
-  background:#f5f5f5;
+  background:#eee;
   cursor:pointer;
 }
 
@@ -153,7 +163,7 @@ body {
 .modal {
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,0.9);
+  background:rgba(0,0,0,0.95);
   display:none;
   justify-content:center;
   align-items:center;
@@ -161,116 +171,12 @@ body {
 }
 
 .modal img {
-  max-width:90%;
-  max-height:90%;
+  max-width:95%;
+  max-height:95%;
 }
 
 .modal.active {
   display:flex;
 }
+
 </style>
-</head>
-
-<body>
-
-<div class="split" id="home">
-  <div class="half left"><div class="text">NEGRA</div></div>
-  <div class="half right"><div class="text">BLANCA</div></div>
-</div>
-
-<div class="products" id="products">
-  <div class="back" onclick="goBack()">←</div>
-  <div class="grid" id="grid"></div>
-</div>
-
-<div class="modal" id="modal" onclick="closeModal()">
-  <img id="modalImg">
-</div>
-
-<script>
-
-const halves = document.querySelectorAll('.half');
-
-halves.forEach(h=>{
-  h.addEventListener('click', ()=>{
-    const cat = h.classList.contains('left') ? 'black' : 'white';
-    show(cat);
-  });
-
-  h.addEventListener('mouseenter', ()=>activate(h));
-  h.addEventListener('touchstart', ()=>activate(h));
-});
-
-function activate(el){
-  halves.forEach(h=>h.classList.remove('active'));
-  el.classList.add('active');
-}
-
-/* PARALLAX */
-document.addEventListener("mousemove", moveBg);
-document.addEventListener("touchmove", (e)=>moveBg(e.touches[0]));
-
-function moveBg(e){
-  const home = document.getElementById("home");
-  if(home.style.display === "none") return;
-
-  const x = (e.clientX / window.innerWidth - 0.5) * 6;
-  const y = (e.clientY / window.innerHeight - 0.5) * 6;
-
-  halves.forEach(el=>{
-    el.style.backgroundPosition = `${50 + x}% ${50 + y}%`;
-  });
-}
-
-/* PRODUCTOS */
-const productos = [
-  {cat:'black', img:'https://via.placeholder.com/800x1200/000000/ffffff?text=BLACK+1'},
-  {cat:'black', img:'https://via.placeholder.com/800x1200/000000/ffffff?text=BLACK+2'},
-  {cat:'black', img:'https://via.placeholder.com/800x1200/000000/ffffff?text=BLACK+3'},
-  {cat:'black', img:'https://via.placeholder.com/800x1200/000000/ffffff?text=BLACK+4'},
-  {cat:'black', img:'https://via.placeholder.com/800x1200/000000/ffffff?text=BLACK+5'},
-
-  {cat:'white', img:'https://i.postimg.cc/NjT50hTy/b4803a98_eb05_44d5_8e02_79754f8b2658.png'},
-  {cat:'white', img:'https://via.placeholder.com/800x1200/ffffff/000000?text=WHITE+2'},
-  {cat:'white', img:'https://via.placeholder.com/800x1200/ffffff/000000?text=WHITE+3'},
-  {cat:'white', img:'https://via.placeholder.com/800x1200/ffffff/000000?text=WHITE+4'},
-  {cat:'white', img:'https://via.placeholder.com/800x1200/ffffff/000000?text=WHITE+5'}
-];
-
-function show(cat){
-  document.getElementById('home').style.display = 'none';
-  document.getElementById('products').style.display = 'block';
-
-  const grid = document.getElementById('grid');
-  grid.innerHTML = '';
-
-  productos
-    .filter(p => p.cat === cat)
-    .forEach(p => {
-      grid.innerHTML += `
-        <div class="card" onclick="openModal('${p.img}')">
-          <img src="${p.img}">
-        </div>
-      `;
-    });
-}
-
-function goBack(){
-  document.getElementById('home').style.display = 'flex';
-  document.getElementById('products').style.display = 'none';
-}
-
-/* MODAL */
-function openModal(src){
-  document.getElementById('modal').classList.add('active');
-  document.getElementById('modalImg').src = src;
-}
-
-function closeModal(){
-  document.getElementById('modal').classList.remove('active');
-}
-
-</script>
-
-</body>
-</html>
