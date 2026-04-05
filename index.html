@@ -9,199 +9,289 @@
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
 
 <style>
-* {
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
 
-body {
-  font-family:'Orbitron', sans-serif;
-  overflow:hidden;
-}
+/* RESET */
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Orbitron',sans-serif;overflow:hidden;}
 
 /* SPLIT */
-.split {
-  display:flex;
-  height:100vh;
-}
+.split{display:flex;height:100dvh;}
 
-.half {
+.half{
   flex:1;
   display:flex;
   justify-content:center;
   align-items:center;
   cursor:pointer;
   position:relative;
-  transition:0.5s;
   overflow:hidden;
+  transition:0.4s ease;
 }
 
-/* TEXTURAS PURAS */
-.left {
-  background-image:url('https://i.postimg.cc/dQxMSLXF/negra2.png');
-  background-size:cover;
-  background-position:center;
+/* BACKGROUNDS */
+.left{
+  background:url('https://i.postimg.cc/dQxMSLXF/negra2.png') center/125% no-repeat;
   color:#fff;
 }
-
-.right {
-  background-image:url('https://i.postimg.cc/0jLB5JRZ/blanca2.png');
-  background-size:cover;
-  background-position:center;
+.right{
+  background:url('https://i.postimg.cc/0jLB5JRZ/blanca2.png') center/125% no-repeat;
   color:#000;
 }
 
-/* GRAIN (opcional, no afecta color real) */
-.half::after {
+/* MOBILE FULL */
+@media(max-width:768px){
+  .left,.right{background-size:cover;}
+}
+
+/* HOVER FX */
+.half::before{
   content:"";
   position:absolute;
   inset:0;
-  opacity:0.05;
-  pointer-events:none;
-  background-image:url('https://grainy-gradients.vercel.app/noise.svg');
+  background:radial-gradient(circle, rgba(255,255,255,0.18), transparent 60%);
+  opacity:0;
+  transition:0.4s;
 }
 
-/* TEXTO */
-.text {
+.half:hover::before,
+.half.active::before{
+  opacity:1;
+}
+
+/* SCALE */
+.half:hover{
+  transform:scale(1.04);
+}
+
+/* TEXT */
+.text{
   position:relative;
   z-index:2;
-  font-size:clamp(28px,5vw,70px);
-  letter-spacing:4px;
-  text-transform:uppercase;
-}
-
-/* glow */
-.left .text {
-  text-shadow:0 0 10px rgba(255,255,255,0.4);
-}
-
-.right .text {
-  text-shadow:0 0 10px rgba(0,0,0,0.3);
-}
-
-/* hover */
-.half:hover {
-  flex:1.2;
+  font-size:clamp(32px,6vw,70px);
+  letter-spacing:6px;
 }
 
 /* PRODUCTS */
-.products {
+.products{
   display:none;
-  padding:20px;
+  height:100dvh;
   background:#fff;
-  min-height:100vh;
 }
 
-/* GRID */
-.grid {
-  display:grid;
-  grid-template-columns: repeat(2,1fr);
-  gap:20px;
+/* TRACK */
+.track{
+  display:flex;
+  height:100%;
+  transition:0.5s ease;
 }
 
-@media(max-width:600px){
-  .grid {
-    grid-template-columns: repeat(3,1fr);
-    gap:10px;
-  }
+/* MOBILE SLIDE */
+.slide{
+  min-width:100%;
+  height:100%;
 }
 
-.card {
-  border:1px solid #ddd;
-}
-
-.card img {
+.slide img{
   width:100%;
-  height:200px;
+  height:100%;
   object-fit:cover;
 }
 
-@media(max-width:600px){
-  .card img {
-    height:120px;
+/* DESKTOP EDITORIAL */
+@media(min-width:900px){
+
+  .track{
+    padding:60px 80px; /* sangría */
+    gap:30px;
+    justify-content:center;
+    transform:none !important;
   }
+
+  .slide{
+    min-width:0;
+    width:33.333%;
+    height:80vh;
+  }
+
+  .slide img{
+    border-radius:16px;
+    object-fit:cover;
+  }
+
+}
+
+/* MOBILE THUMBS */
+.thumbs{
+  position:absolute;
+  bottom:0;
+  width:100%;
+  display:flex;
+  gap:6px;
+  padding:10px;
+  overflow-x:auto;
+  background:rgba(0,0,0,0.4);
+}
+
+.thumb{
+  min-width:70px;
+  height:90px;
+  overflow:hidden;
+  border-radius:6px;
+}
+
+.thumb img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* HIDE THUMBS DESKTOP */
+@media(min-width:900px){
+  .thumbs{display:none;}
 }
 
 /* BACK */
-.back {
-  margin-bottom:20px;
+.back{
+  position:absolute;
+  top:15px;
+  left:15px;
+  z-index:10;
+  background:#000;
+  color:#fff;
+  padding:6px 10px;
   cursor:pointer;
-  font-size:14px;
-  opacity:0.6;
 }
+
+/* MODAL */
+.modal{
+  position:fixed;
+  inset:0;
+  background:#000;
+  display:none;
+  justify-content:center;
+  align-items:center;
+}
+
+.modal img{
+  max-width:95%;
+  max-height:95%;
+}
+
+.modal.active{display:flex;}
+
 </style>
 </head>
 
 <body>
 
+<!-- HOME -->
 <div class="split" id="home">
-  <div class="half left" onclick="show('black')">
-    <div class="text">NEGRA</div>
-  </div>
-
-  <div class="half right" onclick="show('white')">
-    <div class="text">BLANCA</div>
-  </div>
+  <div class="half left"><div class="text">NEGRA</div></div>
+  <div class="half right"><div class="text">BLANCA</div></div>
 </div>
 
+<!-- PRODUCTS -->
 <div class="products" id="products">
-  <div class="back" onclick="goBack()">← VOLVER</div>
-  <div class="grid" id="grid"></div>
+
+  <div class="back" onclick="goBack()">←</div>
+
+  <div class="track" id="track"></div>
+
+  <div class="thumbs" id="thumbs"></div>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal" onclick="closeModal()">
+  <img id="modalImg">
 </div>
 
 <script>
 
-/* PARALLAX SUAVE */
-document.addEventListener("mousemove", (e) => {
-  const home = document.getElementById("home");
-  if(home.style.display === "none") return;
+/* HOVER + TOUCH */
+const halves=document.querySelectorAll('.half');
 
-  const x = (e.clientX / window.innerWidth - 0.5) * 4;
-  const y = (e.clientY / window.innerHeight - 0.5) * 4;
+halves.forEach(h=>{
+  h.onclick=()=>{
+    const cat=h.classList.contains('left')?'black':'white';
+    load(cat);
+  };
 
-  document.querySelectorAll('.half').forEach(el=>{
-    el.style.backgroundPosition = `${50 + x}% ${50 + y}%`;
+  h.addEventListener('mouseenter',()=>activate(h));
+  h.addEventListener('touchstart',()=>activate(h));
+});
+
+function activate(el){
+  halves.forEach(h=>h.classList.remove('active'));
+  el.classList.add('active');
+}
+
+/* PARALLAX */
+document.addEventListener("mousemove",e=>{
+  const x=(e.clientX/window.innerWidth-0.5)*6;
+  const y=(e.clientY/window.innerHeight-0.5)*6;
+
+  halves.forEach(el=>{
+    el.style.backgroundPosition=`${50+x}% ${50+y}%`;
   });
 });
 
-/* PRODUCTOS */
-const productos = [
-  {cat:'black', img:'https://via.placeholder.com/300/000000/ffffff'},
-  {cat:'black', img:'https://via.placeholder.com/300/000000/ffffff'},
-  {cat:'black', img:'https://via.placeholder.com/300/000000/ffffff'},
-  {cat:'black', img:'https://via.placeholder.com/300/000000/ffffff'},
-  {cat:'black', img:'https://via.placeholder.com/300/000000/ffffff'},
+/* DATA */
+const data={
+  white:[
+    "https://i.postimg.cc/NjT50hTy/b4803a98_eb05_44d5_8e02_79754f8b2658.png",
+    "https://via.placeholder.com/800x1200/fff/000?text=2",
+    "https://via.placeholder.com/800x1200/fff/000?text=3",
+    "https://via.placeholder.com/800x1200/fff/000?text=4"
+  ],
+  black:[
+    "https://via.placeholder.com/800x1200/000/fff?text=1",
+    "https://via.placeholder.com/800x1200/000/fff?text=2",
+    "https://via.placeholder.com/800x1200/000/fff?text=3"
+  ]
+};
 
-  {cat:'white', img:'https://via.placeholder.com/300/ffffff/000000'},
-  {cat:'white', img:'https://via.placeholder.com/300/ffffff/000000'},
-  {cat:'white', img:'https://via.placeholder.com/300/ffffff/000000'},
-  {cat:'white', img:'https://via.placeholder.com/300/ffffff/000000'},
-  {cat:'white', img:'https://via.placeholder.com/300/ffffff/000000'}
-];
+function load(cat){
+  document.getElementById('home').style.display='none';
+  document.getElementById('products').style.display='block';
 
-function show(cat){
-  document.getElementById('home').style.display = 'none';
-  document.getElementById('products').style.display = 'block';
+  const track=document.getElementById('track');
+  const thumbs=document.getElementById('thumbs');
 
-  const grid = document.getElementById('grid');
-  grid.innerHTML = '';
+  track.innerHTML='';
+  thumbs.innerHTML='';
 
-  productos
-    .filter(p => p.cat === cat)
-    .forEach(p => {
-      grid.innerHTML += `
-        <div class="card">
-          <img src="${p.img}">
-        </div>
-      `;
-    });
+  data[cat].forEach((img,i)=>{
+    track.innerHTML+=`
+      <div class="slide" onclick="openModal('${img}')">
+        <img src="${img}">
+      </div>
+    `;
+
+    thumbs.innerHTML+=`
+      <div class="thumb" onclick="openModal('${img}')">
+        <img src="${img}">
+      </div>
+    `;
+  });
 }
 
+/* BACK */
 function goBack(){
-  document.getElementById('home').style.display = 'flex';
-  document.getElementById('products').style.display = 'none';
+  document.getElementById('home').style.display='flex';
+  document.getElementById('products').style.display='none';
 }
+
+/* MODAL */
+function openModal(src){
+  document.getElementById('modal').classList.add('active');
+  document.getElementById('modalImg').src=src;
+}
+
+function closeModal(){
+  document.getElementById('modal').classList.remove('active');
+}
+
 </script>
 
 </body>
