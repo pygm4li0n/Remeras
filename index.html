@@ -117,17 +117,35 @@ body{font-family:'Orbitron',sans-serif;overflow:hidden;}
   left:62%;
   top:50%;
   transform:translateY(-50%);
-
   width:30%;
   max-width:480px;
-
   display:flex;
   flex-direction:column;
   align-items:flex-start;
   justify-content:center;
-
   gap:12px;
   color:#111;
+}
+
+/* NEGRA ITEMS: 20% bigger */
+.products.black .info .title{
+  font-size:38px; /* 32px -> 38px */
+}
+
+.products.black .info .rating{
+  font-size:1.2em;
+}
+
+.products.black .info .rating span{
+  font-size:14px; /* 12px -> 14px */
+}
+
+.products.black .info .price{
+  font-size:52px; /* 44px -> 52px */
+}
+
+.products.black .info .subtitle{
+  font-size:16px; /* 14px -> 16px */
 }
 
 /* TEXT INFO */
@@ -188,18 +206,14 @@ body{font-family:'Orbitron',sans-serif;overflow:hidden;}
 .buy{
   width:60%;
   margin-top:12px;
-
   padding:14px;
   background:#3483fa;
   color:#fff;
-
   text-align:center;
   text-decoration:none;
   font-weight:700;
-
   border-radius:8px;
   transition:0.25s;
-
   align-self:flex-start;
 }
 
@@ -230,8 +244,8 @@ body{font-family:'Orbitron',sans-serif;overflow:hidden;}
 }
 
 .thumb{
-  width:60px;
-  height:80px;
+  width:60px;  /* same size for negra and blanca */
+  height:80px; /* same size for negra and blanca */
   overflow:hidden;
   border-radius:6px;
   cursor:pointer;
@@ -268,7 +282,6 @@ body{font-family:'Orbitron',sans-serif;overflow:hidden;}
     transform:none;
     bottom:0;
     top:auto;
-
     padding:20px;
     align-items:center;
     text-align:center;
@@ -354,16 +367,25 @@ const data={
     "https://via.placeholder.com/800x1200/ffffff/000?text=2",
     "https://via.placeholder.com/800x1200/ffffff/000?text=3"
   ],
+
   black:[
-    "https://via.placeholder.com/800x1200/000/fff?text=1",
-    "https://via.placeholder.com/800x1200/000/fff?text=2",
-    "https://via.placeholder.com/800x1200/000/fff?text=3"
+    "https://i.postimg.cc/y33jcKJp/7ee1fdef-d878-4da7-b054-0f25608be346-(6).png",
+    "https://i.postimg.cc/vxxhfygR/Chat-GPT-Image-26-mar-2026-16-57-06-(5).png",
+    "https://i.postimg.cc/gLLs8pwC/Chat-GPT-Image-26-mar-2026-16-57-06-(6).png"
   ]
 };
 
 function load(cat){
   document.getElementById('home').style.display='none';
-  document.getElementById('products').style.display='block';
+  const products=document.getElementById('products');
+  products.style.display='block';
+
+  // Añadir clase para negra stats
+  if(cat==='black'){
+    products.classList.add('black');
+  } else {
+    products.classList.remove('black');
+  }
 
   const thumbs=document.getElementById('thumbs');
   const main=document.getElementById('mainImg');
