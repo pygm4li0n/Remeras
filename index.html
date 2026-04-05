@@ -6,7 +6,6 @@
 
 <title>BASE SHIRTS</title>
 
-<!-- FONT EPIC -->
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
 
 <style>
@@ -17,9 +16,37 @@
 }
 
 body {
-  font-family: 'Orbitron', sans-serif;
+  font-family:'Orbitron', sans-serif;
   overflow:hidden;
 }
+
+/* LOGO */
+.logo {
+  position:fixed;
+  top:20px;
+  left:50%;
+  transform:translateX(-50%);
+  width:120px;
+  height:50px;
+  z-index:10;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.logo img {
+  position:absolute;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  transition:opacity 0.35s ease;
+}
+
+.show { opacity:1; }
+.hide { opacity:0; }
 
 /* SPLIT */
 .split {
@@ -27,7 +54,7 @@ body {
   height:100vh;
 }
 
-/* HALF BASE */
+/* HALVES */
 .half {
   flex:1;
   display:flex;
@@ -35,67 +62,87 @@ body {
   align-items:center;
   cursor:pointer;
   position:relative;
+  transition:0.5s;
   overflow:hidden;
-  transition:0.6s;
 }
 
-/* TEXT STYLE */
-.text {
-  font-size:clamp(28px,5vw,70px);
-  letter-spacing:4px;
-  position:relative;
-  z-index:2;
-}
-
-/* METAL GLOW EFFECT */
-.glow {
-  background: linear-gradient(90deg, #888, #fff, #888);
-  background-size:200%;
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  animation:shine 4s linear infinite;
-}
-
-@keyframes shine {
-  0% { background-position:-200%; }
-  100% { background-position:200%; }
-}
-
-/* DARK SIDE */
+/* TEXTURAS */
 .left {
-  background:#000;
+  background-image:url('https://i.postimg.cc/HnShqP30/Chat_GPT_Image_4_abr_2026_23_48_08.png');
+  background-size:cover;
+  background-position:center;
   color:#fff;
 }
 
-.left::before {
-  content:"";
-  position:absolute;
-  width:200%;
-  height:200%;
-  background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 60%);
-  animation: move 10s linear infinite;
-}
-
-/* LIGHT SIDE */
 .right {
-  background:#fff;
+  background-image:url('https://i.postimg.cc/3J1GTQXK/Chat-GPT-Image-4-abr-2026-23-54-33-(1).png');
+  background-size:cover;
+  background-position:center;
   color:#000;
 }
 
+/* OVERLAY EDITORIAL */
+.left::before,
 .right::before {
   content:"";
   position:absolute;
-  width:200%;
-  height:200%;
-  background: radial-gradient(circle, rgba(0,0,0,0.08) 0%, transparent 60%);
-  animation: move 10s linear infinite reverse;
+  inset:0;
+  pointer-events:none;
 }
 
-/* SUBTLE MOTION */
-@keyframes move {
+/* NEGRA → más profundidad */
+.left::before {
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.08), transparent 60%),
+    linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.8));
+}
+
+/* BLANCA → contraste editorial */
+.right::before {
+  background:
+    radial-gradient(circle at 70% 30%, rgba(0,0,0,0.1), transparent 60%),
+    linear-gradient(to bottom, rgba(255,255,255,0.3), rgba(255,255,255,0.6));
+  backdrop-filter: brightness(1.08) contrast(1.6);
+}
+
+/* FILM GRAIN */
+.half::after {
+  content:"";
+  position:absolute;
+  inset:0;
+  opacity:0.08;
+  pointer-events:none;
+  background-image:url('https://grainy-gradients.vercel.app/noise.svg');
+  animation:grain 0.3s steps(2) infinite;
+}
+
+@keyframes grain {
   0% { transform:translate(0,0); }
-  50% { transform:translate(-10%, -10%); }
-  100% { transform:translate(0,0); }
+  100% { transform:translate(-5%, -5%); }
+}
+
+/* TEXTO */
+.text {
+  position:relative;
+  z-index:2;
+  font-size:clamp(28px,5vw,70px);
+  letter-spacing:4px;
+  text-transform:uppercase;
+  transition:0.3s;
+}
+
+/* glow NEGRA */
+.left .text {
+  text-shadow:
+    0 0 10px rgba(255,255,255,0.5),
+    0 0 30px rgba(255,255,255,0.2);
+}
+
+/* glow BLANCA */
+.right .text {
+  text-shadow:
+    0 0 8px rgba(0,0,0,0.4),
+    0 0 20px rgba(0,0,0,0.2);
 }
 
 /* HOVER EXPAND */
@@ -131,7 +178,6 @@ body {
   }
 }
 
-/* CARD */
 .card {
   border:1px solid #ddd;
 }
@@ -148,25 +194,11 @@ body {
   }
 }
 
-.info {
-  text-align:center;
-  padding:10px;
-}
-
-.btn {
-  display:inline-block;
-  margin-top:8px;
-  padding:6px 12px;
-  border:1px solid #000;
-  text-decoration:none;
-  color:#000;
-  font-size:12px;
-}
-
 /* BACK */
 .back {
   margin-bottom:20px;
   cursor:pointer;
+  font-size:14px;
   opacity:0.6;
 }
 </style>
@@ -174,41 +206,87 @@ body {
 
 <body>
 
-<!-- SPLIT -->
+<div class="logo">
+  <img id="logoWhite" src="https://i.postimg.cc/WD8MJCtn/white.png">
+  <img id="logoBlack" src="https://i.postimg.cc/jWczJmCc/negro.png">
+</div>
+
 <div class="split" id="home">
   <div class="half left" onclick="show('black')">
-    <div class="text glow">NEGRA</div>
+    <div class="text">NEGRA</div>
   </div>
 
   <div class="half right" onclick="show('white')">
-    <div class="text glow">BLANCA</div>
+    <div class="text">BLANCA</div>
   </div>
 </div>
 
-<!-- PRODUCTS -->
 <div class="products" id="products">
   <div class="back" onclick="goBack()">← VOLVER</div>
   <div class="grid" id="grid"></div>
 </div>
 
 <script>
-const productos = [
-  {cat:'black', img:'https://via.placeholder.com/300/000000/ffffff', link:'LINK_1'},
-  {cat:'black', img:'https://via.placeholder.com/300/000000/ffffff', link:'LINK_2'},
-  {cat:'black', img:'https://via.placeholder.com/300/000000/ffffff', link:'LINK_3'},
-  {cat:'black', img:'https://via.placeholder.com/300/000000/ffffff', link:'LINK_4'},
-  {cat:'black', img:'https://via.placeholder.com/300/000000/ffffff', link:'LINK_5'},
+const logoWhite = document.getElementById('logoWhite');
+const logoBlack = document.getElementById('logoBlack');
 
-  {cat:'white', img:'https://via.placeholder.com/300/ffffff/000000', link:'LINK_6'},
-  {cat:'white', img:'https://via.placeholder.com/300/ffffff/000000', link:'LINK_7'},
-  {cat:'white', img:'https://via.placeholder.com/300/ffffff/000000', link:'LINK_8'},
-  {cat:'white', img:'https://via.placeholder.com/300/ffffff/000000', link:'LINK_9'},
-  {cat:'white', img:'https://via.placeholder.com/300/ffffff/000000', link:'LINK_10'}
+function setLogo(mode){
+  if(mode === 'black'){
+    logoWhite.classList.add('show');
+    logoWhite.classList.remove('hide');
+    logoBlack.classList.add('hide');
+    logoBlack.classList.remove('show');
+  } else {
+    logoBlack.classList.add('show');
+    logoBlack.classList.remove('hide');
+    logoWhite.classList.add('hide');
+    logoWhite.classList.remove('show');
+  }
+}
+
+setLogo('white');
+
+/* CURSOR + PARALLAX */
+document.addEventListener("mousemove", (e) => {
+  const home = document.getElementById("home");
+  if(home.style.display === "none") return;
+
+  const middle = window.innerWidth / 2;
+
+  if (e.clientX < middle) {
+    setLogo('black');
+  } else {
+    setLogo('white');
+  }
+
+  /* PARALLAX */
+  const x = (e.clientX / window.innerWidth - 0.5) * 10;
+  const y = (e.clientY / window.innerHeight - 0.5) * 10;
+
+  document.querySelectorAll('.half').forEach(el=>{
+    el.style.backgroundPosition = `${50 + x}% ${50 + y}%`;
+  });
+});
+
+/* PRODUCTOS */
+const productos = [
+  {cat:'black', img:'https://via.placeholder.com/300/000000/ffffff'},
+  {cat:'black', img:'https://via.placeholder.com/300/000000/ffffff'},
+  {cat:'black', img:'https://via.placeholder.com/300/000000/ffffff'},
+  {cat:'black', img:'https://via.placeholder.com/300/000000/ffffff'},
+  {cat:'black', img:'https://via.placeholder.com/300/000000/ffffff'},
+
+  {cat:'white', img:'https://via.placeholder.com/300/ffffff/000000'},
+  {cat:'white', img:'https://via.placeholder.com/300/ffffff/000000'},
+  {cat:'white', img:'https://via.placeholder.com/300/ffffff/000000'},
+  {cat:'white', img:'https://via.placeholder.com/300/ffffff/000000'},
+  {cat:'white', img:'https://via.placeholder.com/300/ffffff/000000'}
 ];
 
 function show(cat){
   document.getElementById('home').style.display = 'none';
   document.getElementById('products').style.display = 'block';
+  setLogo(cat);
 
   const grid = document.getElementById('grid');
   grid.innerHTML = '';
@@ -219,9 +297,6 @@ function show(cat){
       grid.innerHTML += `
         <div class="card">
           <img src="${p.img}">
-          <div class="info">
-            <a href="${p.link}" target="_blank" class="btn">BUY</a>
-          </div>
         </div>
       `;
     });
@@ -230,6 +305,7 @@ function show(cat){
 function goBack(){
   document.getElementById('home').style.display = 'flex';
   document.getElementById('products').style.display = 'none';
+  setLogo('white');
 }
 </script>
 
